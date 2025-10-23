@@ -1,8 +1,4 @@
-"""
-Car price prediction program: uses trained linear regression model to estimate prices.
-"""
 import os
-
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 try:

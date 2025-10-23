@@ -1,6 +1,3 @@
-"""
-Linear regression training program: trains a model on car mileage/price data.
-"""
 import csv
 import os
 import matplotlib.pyplot as plt

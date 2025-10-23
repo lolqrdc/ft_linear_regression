@@ -1,6 +1,3 @@
-"""
-Model precision evaluation program: calculates accuracy metrics for the trained model.
-"""
 import os
 import csv
 import math
