@@ -8,8 +8,11 @@ try:
         x_mean = float(f.readline())
         x_std = float(f.readline())
 except FileNotFoundError:
-    print("Error: thetas.txt not found. Run training.py first!")
-    exit(1)
+    print("Warning: Model not trained yet. Initializing theta0 and theta1 to 0.")
+    theta0 = 0.0
+    theta1 = 0.0
+    x_mean = 0.0
+    x_std = 1.0
 
 try:
     mileage = float(input("Enter a mileage: "))
@@ -26,6 +29,6 @@ mileage_normalized = (mileage - x_mean) / x_std
 estimated_price = theta0 + theta1 * mileage_normalized
 
 if estimated_price < 0:
-    print(f"Estimated price: Price too low (negative value: {estimated_price:.2f} €)")
+    print(f"Estimated price: Price too low (negative value: {estimated_price:.2f}€)")
 else:
-    print(f"Estimated price: {estimated_price:.2f} €")
+    print(f"Estimated price: {estimated_price:.2f}€")
