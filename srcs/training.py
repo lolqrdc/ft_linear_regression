@@ -6,11 +6,13 @@ import matplotlib.pyplot as plt
 
 # Creation of a function to read the file data.csv, extract km & price, 
 # and return those values.
-def readData():
+def readData(data):
     km = []
     price = []
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    filepath = os.path.join(script_dir, data)
 
-    with open('data.csv', newline='') as csvfile:
+    with open(filepath, newline='') as csvfile:
         datareader = csv.reader(csvfile, delimiter=',')
         next(datareader)
         for row in datareader:
@@ -37,7 +39,6 @@ def gradientDescent(x, y, alpha=0.01, iterations=1000):
         theta1 = theta1 - alpha * (tmp1 / m)
     return (theta0, theta1);
 
-
 # Useful functions to: calc mean, normalize data, and standard deviation.
 def mean(arr):
     return (sum(arr)/len(arr))
@@ -53,12 +54,14 @@ def normalize(arr):
 
 # Save the coefficients to use it for predict.py.
 def save_params(theta0, theta1, mean_x, std_x, filename="saved.txt"):
-    with open(filename, "w") as f:
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    filepath = os.path.join(script_dir, filename)
+    with open(filepath, "w") as f:
         f.write(f"{theta0}\n{theta1}\n{mean_x}\n{std_x}\n")
 
 # Main 
 def main():
-    x, y = readData()
+    x, y = readData("data.csv")
     x_mean = mean(x)
     x_std = std(x)
     x_norm = normalize(x)
@@ -74,7 +77,12 @@ def main():
     plt.ylabel("Price")
     plt.legend()
     plt.title("Linear Regression")
-    plt.show()
+    
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    filepath = os.path.join(script_dir, "regression_plot.png")
+    plt.savefig(filepath)
+    print(f"Graph saved to {filepath}")
+    plt.close()
 
 if __name__ == "__main__":
     main()
