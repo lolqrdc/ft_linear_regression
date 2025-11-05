@@ -12,11 +12,9 @@ def loadData(filename="saved.txt"):
             std_x = float(f.readline())
         return (theta0, theta1, mean_x, std_x)
     except FileNotFoundError:
-        print("Error: saved.txt not found, please run training.py first.")
-        exit(1)
+        return (0.0, 0.0, 0.0, 1.0)
     except ValueError:
-        print("Error: corrupted file.")
-        exit(1)
+        return (0.0, 0.0, 0.0, 1.0)
 
 # Predict car price from mileage using normalized linear regression formula.
 def predictPrice(mileage, theta0, theta1, mean_x, std_x):

@@ -35,8 +35,10 @@ def gradientDescent(x, y, alpha=0.01, iterations=1000):
             tmp0 += error
             tmp1 += error * x[i]
 
-        theta0 = theta0 - alpha * (tmp0 / m)
-        theta1 = theta1 - alpha * (tmp1 / m)
+        new_theta0 = theta0 - alpha * (tmp0 / m)
+        new_theta1 = theta1 - alpha * (tmp1 / m)
+        theta0 = new_theta0
+        theta1 = new_theta1
     return (theta0, theta1);
 
 # Useful functions to: calc mean, normalize data, and standard deviation.
@@ -69,14 +71,34 @@ def main():
     theta0, theta1 = gradientDescent(x_norm, y, alpha=0.01, iterations=1000)
     save_params(theta0, theta1, x_mean, x_std, filename="saved.txt")
 
-    # Visualisation
+    # Bonus : visualization
     y_pred = [theta0 + theta1 * xi for xi in x_norm]
-    plt.scatter(x, y, color="blue", label="Data points")
-    plt.plot(x, y_pred, color="red", label="Regression line")
-    plt.xlabel("Mileage")
-    plt.ylabel("Price")
-    plt.legend()
-    plt.title("Linear Regression")
+    
+    plt.figure(figsize=(10, 6))
+    plt.scatter(x, y, color="blue", alpha=0.6, s=50, label="Data points")
+    
+    # Draw regression line only within data range
+    x_line = [min(x), max(x)]
+    x_line_norm = [(xi - x_mean) / x_std for xi in x_line]
+    y_line = [theta0 + theta1 * xi_norm for xi_norm in x_line_norm]
+    plt.plot(x_line, y_line, color="red", linewidth=2, label="Regression line")
+    
+    # Optional : user prediction point
+    try:
+        user_mileage = float(input("Enter mileage to visualize (or press Enter to skip): ") or "-1")
+        if user_mileage >= 0:
+            normalized_mileage = (user_mileage - x_mean) / x_std
+            user_price = theta0 + theta1 * normalized_mileage
+            plt.scatter(user_mileage, user_price, color="yellow", s=200, marker=".", 
+                      label=f"Visualization point (km)")
+    except (ValueError, TypeError):
+        pass
+    
+    plt.xlabel("Mileage (km)", fontsize=12)
+    plt.ylabel("Price (€)", fontsize=12)
+    plt.title("Linear Regression: Car Price vs Mileage", fontsize=14, fontweight='bold')
+    plt.legend(fontsize=11)
+    plt.grid(True, alpha=0.3)
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     filepath = os.path.join(script_dir, "regression_plot.png")
